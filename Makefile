@@ -1,8 +1,8 @@
-FLAGS=-O3 -Wall
+FLAGS=-O0 -Wall
 RM=rm -f
 CC=gcc
 
-EXEC=acc2
+EXEC=htcg
 
 all: $(EXEC)
 

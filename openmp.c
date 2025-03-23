@@ -133,20 +133,22 @@ int main()
 
 	//solução iterativa - ciclos
 	start = omp_get_wtime();
+	float* r = (float*)malloc(alloc);
+	float* d = (float*)malloc(alloc);
+	float* q = (float*)malloc(alloc);
+	float* aux = (float*)malloc(alloc);
 
 	for (j = 0;j < ciclos;j++)
 	{
-		float* r = (float*)malloc(alloc);
-		float* d = (float*)malloc(alloc);
-		float* q = (float*)malloc(alloc);
-		float* aux = (float*)malloc(alloc);
 		float sigman = 0, den = 0, alfa = 0, sigmav = 0, beta = 0;
 
-#pragma omp parallel num_threads(8)
+#pragma omp parallel num_threads(8) 
+		//small 16= 24.332031  10= 4.610840  8= 2.894531  4= 3.468750  2= 5.449219 
+		//big   16= 80.180054  10= 36.992065  8= 32.939453 4= 35.902954 2= 46.782227
 		{
 #pragma omp for
 			for (int i = 0; i < size; i++)
-				vetb[i] = vetb[i] + vetb_ext[i];	
+				vetb[i] = vetb[i] + vetb_ext[i];
 
 #pragma omp for
 			for (int i = 0; i < size; i++)
@@ -171,7 +173,7 @@ int main()
 #pragma omp single
 			sigman = 0;
 #pragma omp for reduction(+:sigman)
-			for (int i = 0; i < size; i++) 
+			for (int i = 0; i < size; i++)
 				sigman += r[i] * r[i];
 
 			int it = 0;
@@ -247,14 +249,18 @@ int main()
 
 		} // end parallel
 	}
+	free(r);
+	free(d);
+	free(q);
+	free(aux);
 	end = omp_get_wtime();
 
 	//saida
-	for (i = 0; i < size; i++)
-	{
-		printf("%4.1f\n", vetx[i]);
-	}
-	printf("\n ");
+	// for (i = 0; i < size; i++)
+	// {
+	// 	printf("%4.1f\n", vetx[i]);
+	// }
+	// printf("\n ");
 
 	printf("%lf \n ", (end - start));
 

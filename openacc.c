@@ -324,11 +324,11 @@ int main()
 	end = clock();
 
 	//saida
-	for (i = 0; i < size; i++)
-	{
-		printf("%4.1f\n", vetx[i]);
-	}
-	printf("\n ");
+	// for (i = 0; i < size; i++)
+	// {
+	// 	printf("%4.1f\n", vetx[i]);
+	// }
+	// printf("\n ");
 
 	printf("%lf \n ", (double)(end - start) / CLOCKS_PER_SEC);
 
