@@ -292,11 +292,11 @@ timea=omp_get_wtime();
 timeb=omp_get_wtime();
 
 //saida
- 	// for(i = 0; i < size; i++)
- 	// {
- 	//   printf("%4.1f\n", vetx[i]);
- 	// }
- 	// printf("\n ");
+ 	for(i = 0; i < size; i++)
+ 	{
+ 	  printf("%4.1f\n", vetx[i]);
+ 	}
+ 	printf("\n ");
 
 printf("%f \n ",timeb-timea);
 

@@ -1,19 +1,36 @@
-FLAGS=-O0 -Wall
+FLAGS=-O3 -Wall
 RM=rm -f
 CC=gcc
 
-EXEC=htcg
-
-all: $(EXEC)
-
-$(EXEC):
-	$(CC) $(FLAGS) $(EXEC).c -o x$(EXEC) -lm -fopenmp
-
 clean:
-	$(RM) $(EXEC).o $(EXEC)
+	$(RM) xhtcg xopenmp xopenacc
 
+serial:
+	$(CC) $(FLAGS) htcg.c -o xhtcg -lm -fopenmp
 
-teste: 
-	nvc -fast -Minfo=acc -acc -gpu=cc86 acc2.c -o xacc2
-	nvc -fast -Minfo=acc -acc -gp./xacc2 < input > gpu.log
-	nvc -fast -Minfo=acc -ta=multicore 
+openmp:
+	$(CC) $(FLAGS) openmp.c -o xopenmp -lm -fopenmp
+
+openacc:
+	nvc -fast -Minfo=acc -acc openacc.c -o xopenacc
+
+xserial:
+	@echo "EXEC=xhtcg" > make.sh
+
+xopenmp:
+	@echo "EXEC=xopenmp" > make.sh
+
+xopenacc:
+	@echo "EXEC=xopenacc" > make.sh
+
+big:
+	@echo "INPUTFILE=input_big.dat" >> make.sh
+
+small:
+	@echo "INPUTFILE=input_small.dat" >> make.sh
+
+input:
+	@echo "INPUTFILE=$(FILE)" >> make.sh
+
+run:
+	@. ./make.sh; ./$$EXEC < ./inputs/$$INPUTFILE > ./outputs/out_$$EXEC.txt
